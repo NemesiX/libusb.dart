@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
 
-import 'package:ffi/ffi.dart' show UnsignedChar, calloc;
+import 'package:ffi/ffi.dart' show calloc;
 import 'package:libusb/libusb.dart';
 
 final DynamicLibrary Function() loadLibrary = () {
@@ -112,7 +112,8 @@ class QuickUsb {
         print('$idDevice prodDesc error: ${_libusb.describeError(prodDesc)}');
         return MapEntry(idDevice, '');
       }
-      return MapEntry(idDevice, utf8.decode(strDescPtr.cast<Uint8>().asTypedList(prodDesc)));
+      return MapEntry(idDevice,
+          utf8.decode(strDescPtr.cast<Uint8>().asTypedList(prodDesc)));
     } finally {
       _libusb.libusb_close(devHandle);
     }

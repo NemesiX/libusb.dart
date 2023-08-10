@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=../../ffigen.schema.json
+
+# Name of generated class.
+name: Libusb
+# Dart Doc for generated class.
+description: Bindings to `libusb.h`.
+
+# Output path of the generated bindings.
+output:
+  bindings: 'lib/src/libusb_bindings.dart'
+
+# Path to llvm folder.
+# ffigen will sequentially search for:
+#   - `lib/libclang.so` on linux, 
+#   - `lib/libclang.dylib` on macOs,
+#   - `bin\libclang.dll` on windows;
+# in the specified paths.
+# 
+# Complete path to the dynamic library can also be supplied.
+# Required if ffigen is unable to find this at default locations.
+llvm-path:
+  - '/usr/local/opt/llvm'
+  - 'C:\Program Files\llvm'
+  - '/usr/lib/llvm-11'
+  # Specify exact path to dylib
+  - '/usr/lib64/libclang.so'
+
+# The header entry-points and include-directives.
+# Glob syntax is allowed.
+# If include-directives are not specified ffigen will generate 
+# everything directly/transitively under the entry-points.
+headers:
+    entry-points:
+      - 'libusb-1.0/libusb.h'
+    include-directives: # include only these header files and necessary structs from other header files
+      - '**libusb.h'
+
+# Specify library imports for use in type-map.
+#
+# Note: ffi (dart:ffi) is already available as a predefined import.
+library-imports:
+    pkg_libusb: 'package:libusb/src/libusb_base.dart'
+
+# Map types like integers, typedefs, structs, unions to any other type.
+# 
+# - Sub-fields: typedefs, structs, unions, ints.
+#
+# - lib must be specified in library-imports or be one of a predefined import.
+type-map:
+    'typedefs':
+      'ssize_t':
+        'lib': 'pkg_libusb'
+        'c-type': 'Ssize'
+        'dart-type': 'int'
+    'structs':
+      'timeval':
+        'lib': 'pkg_libusb'
+        'c-type': 'Timeval'
+        'dart-type': 'Timeval'
