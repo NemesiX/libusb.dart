@@ -14,6 +14,7 @@ platforms:
 # Add regular dependencies here.
 dependencies:
   ffi: ^2.1.0
+  plugin_platform_interface: ^2.1.5
 
 dev_dependencies:
   lints: ^2.0.0

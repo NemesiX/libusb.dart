@@ -7,7 +7,7 @@ description: Bindings to `libusb.h`.
 
 # Output path of the generated bindings.
 output:
-  bindings: 'lib/src/libusb_bindings.dart'
+  bindings: 'lib/src/library/libusb_bindings.dart'
 
 # Path to llvm folder.
 # ffigen will sequentially search for:
@@ -39,7 +39,7 @@ headers:
 #
 # Note: ffi (dart:ffi) is already available as a predefined import.
 library-imports:
-    pkg_libusb: 'package:libusb/src/libusb_base.dart'
+    pkg_libusb: 'package:libusb/src/library/libusb_base.dart'
 
 # Map types like integers, typedefs, structs, unions to any other type.
 # 
