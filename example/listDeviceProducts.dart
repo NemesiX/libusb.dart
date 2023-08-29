@@ -1,3 +1,4 @@
+/*
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:io';
@@ -155,3 +156,4 @@ extension LibusbInline on Libusb {
     );
   }
 }
+*/
