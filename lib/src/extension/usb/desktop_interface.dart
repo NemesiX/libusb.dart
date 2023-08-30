@@ -256,6 +256,7 @@ class _UsbDesktop extends UsbPlatform {
     assert(_devHandle != null, 'Device not open');
 
     var result = _libusb.libusb_claim_interface(_devHandle!, intf.id);
+    print(_libusb.describeError(result));
     return result == libusb_error.LIBUSB_SUCCESS;
   }
 
@@ -274,8 +275,9 @@ class _UsbDesktop extends UsbPlatform {
     assert(endpoint.direction == UsbEndpoint.DIRECTION_IN,
         'Endpoint\'s direction should be in');
 
-    dynamic acctualLengthPtr = ffi.calloc<Int32>();
-    dynamic dataPtr = ffi.calloc<Uint8>(maxLength);
+    Pointer<Int> acctualLengthPtr = ffi.calloc<Int>();
+    Pointer<UnsignedChar> dataPtr = ffi.calloc<UnsignedChar>(maxLength);
+
     try {
       var result = _libusb.libusb_bulk_transfer(
         _devHandle!,
@@ -289,7 +291,12 @@ class _UsbDesktop extends UsbPlatform {
       if (result != libusb_error.LIBUSB_SUCCESS) {
         throw 'bulkTransferIn error: ${_libusb.describeError(result)}';
       }
-      return Uint8List.fromList(dataPtr.asTypedList(acctualLengthPtr.value));
+      Uint8List test = Uint8List(0);
+      for (var i = 0; i < maxLength; i++) {
+        print(dataPtr[i]);
+      }
+      // return Uint8List.fromList(dataPtr.asTypedList(acctualLengthPtr.value));
+      return test;
     } finally {
       ffi.calloc.free(acctualLengthPtr);
       ffi.calloc.free(dataPtr);
@@ -303,9 +310,14 @@ class _UsbDesktop extends UsbPlatform {
     assert(endpoint.direction == UsbEndpoint.DIRECTION_OUT,
         'Endpoint\'s direction should be out');
 
-    dynamic actualLengthPtr = ffi.calloc<Int32>();
-    dynamic dataPtr = ffi.calloc<Uint8>(data.length);
-    dataPtr.asTypedList(data.length).setAll(0, data);
+    Pointer<Int> actualLengthPtr = ffi.calloc<Int>();
+    // Pointer<Uint8> dataPtr = ffi.calloc<Uint8>(data.length);
+    // dataPtr.asTypedList(data.length).setAll(0, data);
+    Pointer<UnsignedChar> dataPtr = ffi.calloc<UnsignedChar>(data.length);
+    for (var i = 0; i < data.length; i++) {
+      dataPtr[i] = data[i];
+    }
+
     try {
       var result = _libusb.libusb_bulk_transfer(
         _devHandle!,
@@ -319,7 +331,7 @@ class _UsbDesktop extends UsbPlatform {
       if (result != libusb_error.LIBUSB_SUCCESS) {
         // debugPrint('bulkTransferOut error: ${_libusb.describeError(result)}');
         print('bulkTransferOut error: ${_libusb.describeError(result)}');
-        return -1;
+        return result;
       }
       return actualLengthPtr.value;
     } finally {
