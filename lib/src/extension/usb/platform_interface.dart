@@ -4,6 +4,8 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import '../usb.dart';
 
+export 'platform/desktop_interface.dart';
+
 abstract class UsbPlatform extends PlatformInterface {
   UsbPlatform() : super(token: _token);
 

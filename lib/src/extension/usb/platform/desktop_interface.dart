@@ -7,7 +7,7 @@ import 'package:libusb/libusb.dart';
 // import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 // import '../usb.dart';
 
-import 'platform_interface.dart';
+import '../platform_interface.dart';
 
 late Libusb _libusb;
 
@@ -291,9 +291,9 @@ class _UsbDesktop extends UsbPlatform {
       if (result != libusb_error.LIBUSB_SUCCESS) {
         throw 'bulkTransferIn error: ${_libusb.describeError(result)}';
       }
-      Uint8List test = Uint8List(0);
+      Uint8List test = Uint8List(maxLength);
       for (var i = 0; i < maxLength; i++) {
-        print(dataPtr[i]);
+        test[i] = dataPtr[i];
       }
       // return Uint8List.fromList(dataPtr.asTypedList(acctualLengthPtr.value));
       return test;

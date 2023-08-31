@@ -14,6 +14,7 @@ export 'usb/data/device.dart';
 export 'usb/data/endpoint.dart';
 export 'usb/data/interface.dart';
 export 'usb/utils.dart';
+export 'usb/platform_interface.dart';
 
 UsbPlatform get _platform => UsbPlatform.instance;
 

@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:libusb/src/extension/usb.dart';
-import 'package:libusb/src/extension/usb/desktop_interface.dart';
 
 void main() async {
   String productName = "CLS-ADV";
@@ -67,6 +66,8 @@ void main() async {
   var out = config.interfaces[0].endpoints[1];
 
   List<int> pkt = List<int>.filled(64, 0x00);
+
+  // Poll
   pkt[0] = 0x02;
   pkt[1] = 0x00;
   pkt[2] = 0x01;
@@ -74,6 +75,49 @@ void main() async {
   // pkt[3] = 0x01;
   pkt[4] = 0xFF;
 
+  /*
+  // Enable/Disable Dispenser
+  pkt[0] = 0x02;
+  pkt[1] = 0x03;
+  pkt[2] = 0x01;
+  pkt[3] = 0xFF;
+  pkt[4] = 0x0B;
+  pkt[5] = 0x01;
+  pkt[6] = 0x01;
+  pkt[7] = 0xEE;
+  */
+
+  /*
+  // Confirm the Dispenser
+  pkt[0] = 0x02;
+  pkt[1] = 0x01;
+  pkt[2] = 0x01;
+  pkt[3] = 0xFF;
+  pkt[4] = 0x07;
+  pkt[5] = 0xF6;
+  */
+
+  /*
+  // Enable Acceptor
+  pkt[0] = 0x02;
+  pkt[1] = 0x03;
+  pkt[2] = 0x01;
+  pkt[3] = 0xFF;
+  pkt[4] = 0x0A;
+  pkt[5] = 0x01;
+  pkt[6] = 0x01;
+  pkt[7] = 0xEF;
+  */
+
+  /*
+  // Reset
+  pkt[0] = 0x02;
+  pkt[1] = 0x01;
+  pkt[2] = 0x01;
+  pkt[3] = 0xFF;
+  pkt[4] = 0x43;
+  pkt[5] = 0xBA;
+  */
   var pkt1 = Uint8List.fromList(pkt);
   await Usb.bulkTransferOut(
     inn,
@@ -85,6 +129,7 @@ void main() async {
     Uint8List.fromList(List<int>.filled(64, 0x00)),
   );
 
+  await Future.delayed(Duration(milliseconds: 10));
   var result = await Usb.bulkTransferIn(out, 128);
   print(result);
 
