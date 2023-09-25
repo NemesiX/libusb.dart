@@ -1,5 +1,5 @@
 import 'dart:ffi';
-import 'dart:math';
+// import 'dart:math';
 import 'dart:typed_data';
 import 'dart:io';
 
@@ -8,7 +8,7 @@ import 'package:libusb/libusb.dart';
 // import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 // import '../usb.dart';
 
-import '../platform_interface.dart';
+// import '../platform_interface.dart';
 
 late Libusb _libusb;
 
