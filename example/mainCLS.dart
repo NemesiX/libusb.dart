@@ -48,12 +48,14 @@ void main() async {
   var config = await Usb.getConfiguration(0);
   print("Configuration: $config");
 
+  /*
   if (!await Usb.detachKernelDriver(config.interfaces[0])) {
     print("Failed to detach kernel driver!");
     exit(250);
   } else {
     print("Kernel driver detached!");
   }
+  */
 
   if (!await Usb.claimInterface(config.interfaces[0])) {
     print("Failed to claim interface!");
@@ -68,12 +70,14 @@ void main() async {
   List<int> pkt = List<int>.filled(64, 0x00);
 
   // Poll
+  /*
   pkt[0] = 0x02;
   pkt[1] = 0x00;
   pkt[2] = 0x01;
   pkt[3] = 0xFE;
   // pkt[3] = 0x01;
   pkt[4] = 0xFF;
+  */
 
   /*
   // Enable/Disable Dispenser
@@ -109,7 +113,6 @@ void main() async {
   pkt[7] = 0xEF;
   */
 
-  /*
   // Reset
   pkt[0] = 0x02;
   pkt[1] = 0x01;
@@ -117,7 +120,7 @@ void main() async {
   pkt[3] = 0xFF;
   pkt[4] = 0x43;
   pkt[5] = 0xBA;
-  */
+
   var pkt1 = Uint8List.fromList(pkt);
   await Usb.bulkTransferOut(
     inn,

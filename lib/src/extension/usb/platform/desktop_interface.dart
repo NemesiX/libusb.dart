@@ -13,10 +13,13 @@ import 'package:libusb/libusb.dart';
 late Libusb _libusb;
 
 class UsbLinux extends _UsbDesktop {
-  static registerWith() {
+  static registerWith({String? path}) {
+    if (path == null) {
+      path = '${Directory.current.path}/libusb-1.0/libusb-1.0.so';
+    }
+
     UsbPlatform.instance = UsbLinux();
-    _libusb = Libusb(DynamicLibrary.open(
-        '${Directory.current.path}/libusb-1.0/libusb-1.0.so'));
+    _libusb = Libusb(DynamicLibrary.open(path));
   }
 }
 
